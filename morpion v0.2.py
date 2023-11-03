@@ -1,20 +1,15 @@
-grille = [
+grilleTest = [
     [0,0,0],
     [0,0,0],
     [0,0,0]
 ]
-
-Joueuractuel = "X"
-vainqueur = None
-JeuEncours = True
-
 
 # print la grille
 def printgrille ( grille):
     for i in range(3):
         print(grille[i])
         
-printgrille(grille)
+printgrille(grilleTest)
 
 # commandes du joueur
 def commandeJoueur(grille, numeroJoueur):
@@ -23,13 +18,17 @@ def commandeJoueur(grille, numeroJoueur):
             saisie_ligne = int(input("Choisissez un nombre entre 1 et 3 pour la ligne: ")) - 1
             saisie_colonne = int(input("Choisissez un nombre entre 1 et 3 pour la colonne: ")) - 1
 
-            if 0 <= saisie_ligne < 3 and 0 <= saisie_colonne < 3 and grille[saisie_ligne][saisie_colonne] == 0:
+            if 0 <= saisie_ligne < 3 and 0 <= saisie_colonne < 3 and grille[saisie_ligne][saisie_colonne] == "":
                 grille[saisie_ligne][saisie_colonne] = numeroJoueur
-                break
+                return grille
             else:
                 print("Saisie invalide. Réessayez.")
         except ValueError:
             print("Veuillez entrer un nombre valide.")
+
+#commandeJoueur(grilleTest, 1)
+
+
 # check si il y a victoire ou nul
 def verification(grille, numeroJoueur):
     """
@@ -57,25 +56,49 @@ def verification(grille, numeroJoueur):
     return False
 # switch de joueur
 
-    Joueuractuel = "Y" if Joueuractuel == "X" else "X"
-# Revérifie si il y a match nul ou victoire d'un joueur
-while JeuEncours:
-    printgrille(grille)
-    print(f"C'est au tour du joueur {Joueuractuel}")
-    commandeJoueur(grille, Joueuractuel)
+def jeu():
+    """
+    weoihewfoewhfowefihwefeofhewoiewfhweofehwiof
+    tests de la fonction
 
-    if verification(grille, Joueuractuel):
-        vainqueur = Joueuractuel
-        JeuEncours = False
-    elif all(0 not in ligne for ligne in grille):
-        vainqueur = "Nul"
-        JeuEncours = False
+    >>> jeu()
+    
+    """
+    grilleJeu = [
+        ["","",""],
+        ["","",""],
+        ["","",""]
+    ]
 
+    Joueuractuel = "X"
+    vainqueur = None
+    JeuEncours = True
+    nombreCases = 0
+
+    while JeuEncours:
+        printgrille(grilleJeu)
+        print(f"C'est au tour du joueur {Joueuractuel}")
+        # Choix du joueur
+        grilleJeu = commandeJoueur(grilleJeu, Joueuractuel)
+        
+        # Augmentation compteur tours
+        nombreCases += 1
+        
+        if verification(grilleJeu, Joueuractuel):
+            vainqueur = Joueuractuel
+            JeuEncours = False
+        elif nombreCases == 9:
+            vainqueur = "Nul"
+            JeuEncours = False
+        else:
+            if Joueuractuel == "X":
+                Joueuractuel = "O"
+            else:
+                Joueuractuel = "X"
     
-# Afficher le résultat du jeu
-printgrille(grille)
-if vainqueur == "Nul":
-    print("Le jeu est un match nul!")
-else:
-    print(f"Le joueur {vainqueur} a gagné!")
-    
+    # Afficher le résultat du jeu
+    printgrille(grilleJeu)
+    if vainqueur == "Nul":
+        print("Le jeu est un match nul!")
+    else:
+        print(f"Le joueur {vainqueur} a gagné!")
